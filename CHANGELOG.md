@@ -7,6 +7,7 @@
 - Show D-pad bindings with their direction arrow instead of the raw hat bit number.
 - Open the window with a single left click on the tray icon (double-click still works).
 - Read the embedded mapping correctly even if the file is checked out with CRLF line endings.
+- Center the right stick (R3) inside its grip instead of overflowing its left edge.
 - Draw the live stick pointer on top of L3/R3 and on the same scale as the dead zone, so small movements are visible.
 - Grey out the Xbox button while no controller is connected, and show it in red while emulation is active.
 - Place stick setting fields next to their labels and align the checkboxes and buttons on that tab.

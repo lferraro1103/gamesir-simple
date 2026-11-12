@@ -15,6 +15,9 @@ class ControllerView:Control
     public event Action<string>? ResetRequested;
     int hovered=-1;
     readonly ToolTip tips=new(){InitialDelay=200,ReshowDelay=80,AutoPopDelay=12000};
+    // Stick centers in the 900x500 design space. Each 70px ring sits fully inside its grip,
+    // 15px from the nearest edges (top for the left stick, left and bottom for the right one).
+    static readonly PointF LeftStick=new(166,215),RightStick=new(668,355);
     public static readonly ControlSpot[] Spots=CreateSpots();
     public ControllerView(){DoubleBuffered=true;ResizeRedraw=true;BackColor=Color.FromArgb(248,250,253);AccessibleName="Joystick interactivo: hacé clic para asignar botones y direcciones";}
     static ControlSpot[] CreateSpots()
@@ -31,7 +34,7 @@ class ControllerView:Control
         void Stick(int center,int start,float x,float y,string name){
             Circle(center,x,y,23,name);Circle(start,x-48,y,17,"←");Circle(start+1,x+48,y,17,"→");Circle(start+2,x,y-48,17,"↑");Circle(start+3,x,y+48,17,"↓");
         }
-        Stick(7,17,166,215,"L3");Stick(8,21,646,350,"R3");
+        Stick(7,17,LeftStick.X,LeftStick.Y,"L3");Stick(8,21,RightStick.X,RightStick.Y,"R3");
         return s.ToArray();
     }
     public static RectangleF Viewport(Size size)
@@ -88,7 +91,7 @@ class ControllerView:Control
             using var trace=new Pen(Color.FromArgb(150,70,190,220),2.5f){StartCap=LineCap.Round,EndCap=LineCap.Round};g.DrawLine(trace,x,y,px,py);
             using var dot=new SolidBrush(Color.FromArgb(67,211,208));using var edge=new Pen(Color.White,1.5f);g.FillEllipse(dot,px-6,py-6,12,12);g.DrawEllipse(edge,px-6,py-6,12,12);
         }
-        Stick(166,215,lx,ly,leftDead);Stick(646,350,rx,ry,rightDead);
+        Stick(LeftStick.X,LeftStick.Y,lx,ly,leftDead);Stick(RightStick.X,RightStick.Y,rx,ry,rightDead);
         using(var b=new SolidBrush(Color.FromArgb(15,25,40)))using(var p=Rounded(new(241,326,38,38),5))g.FillPath(b,p);
         foreach(var s in Spots){
             bool active=values[s.Index]>.5f,selected=recording==Engine.Names[s.Index],hover=s.Index==hovered;
@@ -98,7 +101,7 @@ class ControllerView:Control
             if(s.Round){g.FillEllipse(b,s.Bounds);g.DrawEllipse(pen,s.Bounds);}else{using var p=Rounded(s.Bounds,8);g.FillPath(b,p);g.DrawPath(pen,p);}
             DrawText(g,s.Label,s.Bounds,s.Index>=17?19: s.Index==7||s.Index==8?13:17,active||selected?Color.White:s.Tint,FontStyle.Bold);
         }
-        Pointer(166,215,lx,ly);Pointer(646,350,rx,ry);
+        Pointer(LeftStick.X,LeftStick.Y,lx,ly);Pointer(RightStick.X,RightStick.Y,rx,ry);
         DrawText(g,I18n.T("IZQUIERDA · ZONA MUERTA {0}%",leftDead),new(42,454,330,26),13,muted,FontStyle.Bold);DrawText(g,I18n.T("DERECHA · ZONA MUERTA {0}%",rightDead),new(528,454,330,26),13,muted,FontStyle.Bold);
         g.Restore(saved);
     }
