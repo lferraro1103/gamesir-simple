@@ -48,14 +48,14 @@ class ControllerView:Control
     protected override void OnMouseMove(MouseEventArgs e)
     {
         base.OnMouseMove(e);int hit=HitTest(ClientSize,e.Location);if(hit==hovered)return;hovered=hit;Cursor=hit>=0?Cursors.Hand:Cursors.Default;
-        tips.SetToolTip(this,hit<0?"":$"{Engine.Names[hit]} · {MappingText?.Invoke(Engine.Names[hit])??"Mapa automático"}\nClic: asignar · Clic derecho: restablecer");Invalidate();
+        tips.SetToolTip(this,hit<0?"":$"{I18n.Name(Engine.Names[hit])} · {MappingText?.Invoke(Engine.Names[hit])??I18n.T("Mapa automático")}\n{I18n.T("Clic: asignar · Clic derecho: restablecer")}");Invalidate();
     }
     protected override void OnMouseLeave(EventArgs e){base.OnMouseLeave(e);hovered=-1;Invalidate();}
     protected override void OnMouseClick(MouseEventArgs e)
     {
         base.OnMouseClick(e);int hit=HitTest(ClientSize,e.Location);if(hit<0)return;
         if(e.Button==MouseButtons.Left)AssignRequested?.Invoke(Engine.Names[hit]);
-        if(e.Button==MouseButtons.Right){var menu=new ContextMenuStrip();menu.Items.Add("Restablecer "+Engine.Names[hit]+" al mapa automático",null,(_,_)=>ResetRequested?.Invoke(Engine.Names[hit]));menu.Closed+=(_,_)=>menu.Dispose();menu.Show(this,e.Location);}
+        if(e.Button==MouseButtons.Right){var menu=new ContextMenuStrip();menu.Items.Add(I18n.T("Restablecer {0} al mapa automático",I18n.Name(Engine.Names[hit])),null,(_,_)=>ResetRequested?.Invoke(Engine.Names[hit]));menu.Closed+=(_,_)=>menu.Dispose();menu.Show(this,e.Location);}
     }
     protected override void OnPaint(PaintEventArgs e){base.OnPaint(e);Render(e.Graphics,ClientSize,Values,LX,LY,RX,RY,LeftDead,RightDead,Recording,hovered);}
     protected override void Dispose(bool disposing){if(disposing)tips.Dispose();base.Dispose(disposing);}
@@ -92,7 +92,7 @@ class ControllerView:Control
             if(s.Round){g.FillEllipse(b,s.Bounds);g.DrawEllipse(pen,s.Bounds);}else{using var p=Rounded(s.Bounds,8);g.FillPath(b,p);g.DrawPath(pen,p);}
             DrawText(g,s.Label,s.Bounds,s.Index>=17?19: s.Index==7||s.Index==8?13:17,active||selected?Color.White:s.Tint,FontStyle.Bold);
         }
-        DrawText(g,$"IZQUIERDA · ZONA MUERTA {leftDead}%",new(42,454,330,26),13,muted,FontStyle.Bold);DrawText(g,$"DERECHA · ZONA MUERTA {rightDead}%",new(528,454,330,26),13,muted,FontStyle.Bold);
+        DrawText(g,I18n.T("IZQUIERDA · ZONA MUERTA {0}%",leftDead),new(42,454,330,26),13,muted,FontStyle.Bold);DrawText(g,I18n.T("DERECHA · ZONA MUERTA {0}%",rightDead),new(528,454,330,26),13,muted,FontStyle.Bold);
         g.Restore(saved);
     }
 }

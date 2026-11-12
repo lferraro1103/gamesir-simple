@@ -2,11 +2,11 @@
 
 [English](README.md) · [Español](README.es.md) · [简体中文](README.zh-CN.md)
 
-Una app sencilla para Windows que convierte tu **GameSir X5 Lite** en un mando virtual de Xbox 360, con un dibujo interactivo y asignación de controles. **La interfaz de la aplicación está en español**; la documentación está disponible en tres idiomas.
+Una app independiente para Windows que convierte tu **GameSir X5 Lite** en un mando virtual de Xbox 360, con lectura propia de entradas, un dibujo interactivo y asignación de controles. **La interfaz permite elegir español, inglés y chino simplificado** desde el selector de idioma. El cambio es inmediato y se guarda para el próximo inicio.
 
 [Descargar la última versión](https://github.com/lferraro1103/gamesir-simple/releases/latest) · [Reportar un problema](https://github.com/lferraro1103/gamesir-simple/issues)
 
-![Dibujo interactivo del joystick](docs/images/controller.png)
+![GameSir Simple en español](docs/images/app-es.png)
 
 ## Funciones
 
@@ -17,6 +17,8 @@ Una app sencilla para Windows que convierte tu **GameSir X5 Lite** en un mando v
 - Zona muerta radial independiente para cada palanca, recorrido máximo y curva de respuesta.
 - Inversión de ejes, calibración del centro y guardado automático.
 - Un botón para activar o desactivar Xbox; icono propio en el ejecutable y la ventana.
+- Selector inmediato de español, inglés y chino simplificado, incluidas las ayudas y el menú del icono.
+- Cerrar a la bandeja, reabrir desde el icono o salir por completo desde su menú.
 - Funciona localmente, sin cuentas, telemetría ni solicitudes de red desde la app.
 
 ## Requisitos
@@ -29,13 +31,13 @@ La versión portátil incluye el runtime de .NET: no hace falta instalar .NET po
 
 ## Empezar a jugar
 
-1. Descargá `GameSirSimple-v1.1.0-win-x64.zip` desde [Releases](https://github.com/lferraro1103/gamesir-simple/releases).
-2. Extraé **todo el ZIP**. Conservá `gamecontrollerdb.txt` junto a `GameSirSimple.exe`.
-3. Cerrá x360ce y conectá el X5 Lite.
+1. Descargá `GameSirSimple-v1.2.0-win-x64.zip` desde [Releases](https://github.com/lferraro1103/gamesir-simple/releases).
+2. Extraé el ZIP. El ejecutable integra el mapa del mando y el runtime de .NET; no necesitás un archivo de mapeo separado.
+3. Conectá el X5 Lite. No necesitás otro emulador de mandos.
 4. Abrí `GameSirSimple.exe` y verificá los controles en **Joystick interactivo**.
-5. Tocá **Activar control Xbox** y después abrí el juego. Dejá la app abierta o minimizada mientras jugás.
+5. Tocá **Activar control Xbox** y después abrí el juego. Dejá la app funcionando; podés minimizarla o tocar la X para dejarla en la bandeja.
 
-Cerrar la app o tocar **Desactivar Xbox** retira el mando virtual. Si desenchufás y reconectás el GameSir, volvé a activar Xbox.
+La **X** deja la app funcionando en el área de notificaciones y mantiene la emulación activa. Hacé doble clic en el icono o elegí **Abrir GameSir Simple** para recuperar la ventana. Para detener la app y retirar el mando virtual, usá clic derecho en el icono → **Salir completamente**. El menú también permite activar o desactivar Xbox. La app no bloquea el apagado de Windows. Si reconectás el GameSir, volvé a activar Xbox.
 
 ## Asignar desde el dibujo
 
@@ -68,7 +70,7 @@ Los gatillos del X5 Lite son digitales: la app no puede agregarles recorrido ana
 - Solo selecciona el X5 Lite USB con VID `3537` / PID `1116`. No se cubren otros modelos GameSir.
 - No reenvía vibración al mando físico.
 - El ejecutable portátil no tiene firma de código.
-- Se verificaron la detección del hardware y un reporte Xbox virtual a través de XInput de Windows. Falta verificar la compatibilidad juego por juego y completar una prueba manual de toda la interfaz.
+- Anteriormente se verificaron la detección del hardware y un reporte Xbox virtual mediante XInput de Windows. Esta actualización se verificó sin hardware, incluidas las tres pantallas renderizadas y los 25 eventos de asignación. Falta verificar la compatibilidad juego por juego y completar una prueba manual con hardware.
 
 ## Compilar y verificar
 
@@ -78,7 +80,7 @@ Instalá un SDK de .NET 8 y ejecutá desde la raíz del repositorio:
 dotnet publish src/GameSirSimple/GameSirSimple.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -o dist/GameSirSimple
 ```
 
-El workflow de Windows compila y ejecuta las verificaciones de dibujo y geometría, que no abren ventanas, no acceden al mando y no crean un Xbox virtual:
+El workflow de Windows compila y verifica eventos de clic, mapeo, zonas muertas, validación de ajustes guardados, recursos integrados, limpieza de entradas y las tres pantallas. Estas pruebas no muestran ventanas, no acceden al mando, no crean un Xbox virtual ni modifican tus ajustes guardados:
 
 ```powershell
 .\dist\GameSirSimple\GameSirSimple.exe --render-preview .\artifacts\visual

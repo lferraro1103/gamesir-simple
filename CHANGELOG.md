@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.2.0
+
+- Add an instant, persistent Spanish / English / Simplified Chinese language selector.
+- Translate controls, status, mapping names, tooltips, errors and tray commands.
+- Keep the app and emulation running in the notification area when X is clicked.
+- Reopen from the tray icon, toggle Xbox from its menu, or exit completely.
+- Allow Windows shutdown and explicit exit to release the virtual controller.
+
+- Remove the external-emulator banner and process-based activation block.
+- Keep the main screen focused on GameSir Simple controls and saved settings.
+- Embed the X5 Lite mapping in the executable, eliminating the external mapping-file requirement.
+- Clear inputs and stop output immediately when the physical controller disconnects.
+- Validate saved settings and preserve valid bindings when individual entries are malformed.
+- Save settings through a temporary file before replacement.
+- Reject center calibration while a stick is pushed far from rest.
+- Release the polling timer and input engine when the form is disposed.
+- Expand offline checks to all 25 assignment events, input shaping, settings, embedded mapping and three rendered app screens.
+- Update all three language READMEs.
+
 ## v1.1.0
 
 - First GitHub release of GameSir Simple for the GameSir X5 Lite.
