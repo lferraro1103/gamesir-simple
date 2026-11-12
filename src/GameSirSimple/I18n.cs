@@ -72,7 +72,6 @@ static class I18n
         ["Der. ↑"]=new[]{"Right stick ↑","右摇杆 ↑"},["Der. ↓"]=new[]{"Right stick ↓","右摇杆 ↓"},
         ["Guía"]=new[]{"Guide","主页"},["Back"]=new[]{"Back","返回"},["Start"]=new[]{"Start","开始"},
         ["Conectá el GameSir X5 Lite por USB primero."]=new[]{"Connect the GameSir X5 Lite via USB first.","请先通过 USB 连接 GameSir X5 Lite。"},
-        ["GameSir Simple ya está abierto."]=new[]{"GameSir Simple is already running.","GameSir Simple 已在运行。"},
         ["No se pudo iniciar: {0}"]=new[]{"Could not start: {0}","无法启动：{0}"},
         ["No se pudo iniciar la lectura USB."]=new[]{"Could not initialize USB input.","无法初始化 USB 输入。"},
         ["No se pudo cargar el mapa integrado del GameSir."]=new[]{"Could not load the embedded GameSir mapping.","无法加载内置 GameSir 映射。"},

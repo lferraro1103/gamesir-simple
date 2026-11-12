@@ -19,7 +19,8 @@ class MainWindow:Form {
     string? recording;
     float[] baseline=Array.Empty<float>();byte[] baselineButtons=Array.Empty<byte>(),baselineHats=Array.Empty<byte>();
     DateTime recordAt,recordUntil;int ticks;bool ready;
-    public MainWindow(bool previewOnly=false,Settings? settings=null) {
+    RegisteredWaitHandle? showWait;
+    public MainWindow(bool previewOnly=false,Settings? settings=null,WaitHandle? showRequests=null) {
         config=settings??(previewOnly?new Settings():Settings.Load());I18n.Language=config.Language;
         Text="GameSir Simple · X5 Lite";Font=new Font("Segoe UI",10);ClientSize=new Size(940,820);MinimumSize=new Size(860,760);StartPosition=FormStartPosition.CenterScreen;BackColor=Color.FromArgb(245,247,251);
         using(var resource=typeof(MainWindow).Assembly.GetManifestResourceStream("GameSirSimple.app.ico"))if(resource!=null)Icon=new Icon(resource);
@@ -85,7 +86,10 @@ class MainWindow:Form {
                 return;
             }
             AutoSave();
-        };timer.Tick+=(_,_)=>TickInput();ready=!previewOnly;if(!previewOnly)timer.Start();
+        };timer.Tick+=(_,_)=>TickInput();
+        // Opening the EXE again signals this instance: bring the existing window back instead of showing an error.
+        if(showRequests!=null)Load+=(_,_)=>showWait=ThreadPool.RegisterWaitForSingleObject(showRequests,(_,_)=>{try{if(IsHandleCreated && !IsDisposed)BeginInvoke((Action)RestoreWindow);}catch(ObjectDisposedException){}catch(InvalidOperationException){}},null,Timeout.Infinite,false);
+        ready=!previewOnly;if(!previewOnly)timer.Start();
     }
     static void AddWide(TableLayoutPanel p,Control c){int row=p.RowCount++;p.Controls.Add(c,0,row);p.SetColumnSpan(c,2);}
     void AddNumber(TableLayoutPanel p,string label,int val,int min,int max,Action<int> change) {
@@ -151,8 +155,8 @@ class MainWindow:Form {
         mappingPrompt.BackColor=recording==null?Color.FromArgb(235,242,251):Color.FromArgb(255,239,208);preview.Invalidate();RefreshTray();
     }
     void RefreshTray(){trayOpen.Text=I18n.T("Abrir GameSir Simple");trayToggle.Text=I18n.T(engine.Active?"Desactivar Xbox":"Activar control Xbox");trayToggle.Enabled=engine.Connected && recording==null;trayExit.Text=I18n.T("Salir completamente");}
-    void RestoreWindow(){Show();WindowState=FormWindowState.Normal;RefreshView();Activate();}
+    void RestoreWindow(){Show();if(WindowState==FormWindowState.Minimized)WindowState=FormWindowState.Normal;RefreshView();Activate();BringToFront();}
     internal static bool KeepInTray(CloseReason reason,bool quitting)=>reason==CloseReason.UserClosing && !quitting;
     internal string[] TrayLabels()=>trayMenu.Items.OfType<ToolStripMenuItem>().Select(item=>item.Text??"").ToArray();
-    protected override void Dispose(bool disposing){if(disposing && !resourcesDisposed){resourcesDisposed=true;timer.Stop();timer.Dispose();tray.Visible=false;tray.Dispose();trayMenu.Dispose();engine.Dispose();}base.Dispose(disposing);}
+    protected override void Dispose(bool disposing){if(disposing && !resourcesDisposed){resourcesDisposed=true;showWait?.Unregister(null);timer.Stop();timer.Dispose();tray.Visible=false;tray.Dispose();trayMenu.Dispose();engine.Dispose();}base.Dispose(disposing);}
 }

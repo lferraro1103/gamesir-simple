@@ -3,6 +3,7 @@
 ## v1.2.2
 
 - Show the Windows "unknown publisher" prompt only once: after the first approved launch, the app removes the internet download mark from its own EXE.
+- Opening the app again while it is running brings back the existing window (from the tray or minimized) instead of showing an "already open" message.
 - Add an offline check for removing the download mark without changing the file.
 
 ## v1.2.1
