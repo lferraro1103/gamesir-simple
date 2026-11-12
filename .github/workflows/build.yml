@@ -28,10 +28,7 @@ jobs:
           if ($test.ExitCode -ne 0) { throw 'Offline checks failed' }
       - name: Include documentation and licenses
         shell: pwsh
-        run: |
-          Copy-Item LICENSE, README.md, README.es.md, README.zh-CN.md, CHANGELOG.md, THIRD_PARTY.md dist/GameSirSimple
-          Copy-Item licenses dist/GameSirSimple/licenses -Recurse
-          Copy-Item docs dist/GameSirSimple/docs -Recurse
+        run: ./build/package.ps1 -Dist dist/GameSirSimple -Checks artifacts/visual/visual-check.txt
       - uses: actions/upload-artifact@v4
         with:
           name: GameSirSimple-windows-x64

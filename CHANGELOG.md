@@ -14,6 +14,7 @@
 - Remove the misleading pre-selected first row in the mapping table and give it clearer headers.
 - Show "—" in the live readout when no button is pressed.
 - Refresh the README screenshots.
+- Tidy the portable ZIP: only the EXE at the top level, with `docs` and `licenses` folders (packaged by `build/package.ps1`).
 - Add offline regression checks for these fixes.
 
 ## v1.2.0
