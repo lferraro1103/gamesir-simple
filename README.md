@@ -31,7 +31,7 @@ The portable release includes the .NET runtime. A separate .NET installation is 
 
 ## Quick start
 
-1. Download `GameSirSimple-v1.2.0-win-x64.zip` from [Releases](https://github.com/lferraro1103/gamesir-simple/releases).
+1. Download `GameSirSimple-v1.2.1-win-x64.zip` from [Releases](https://github.com/lferraro1103/gamesir-simple/releases).
 2. Extract the ZIP. The executable includes its controller mapping and .NET runtime; no separate mapping file is required.
 3. Connect your X5 Lite. No other controller emulator is required.
 4. Run `GameSirSimple.exe`. Choose **English** in the language selector if desired. Check your inputs under **Interactive controller** (**Joystick interactivo** in Spanish).

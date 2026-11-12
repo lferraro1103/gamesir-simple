@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.2.1
 
 - Fix a startup crash when a saved response curve (or any stick setting) was above 100.
 - Fix language switching resetting edited stick settings to the values from app startup.

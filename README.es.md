@@ -31,7 +31,7 @@ La versión portátil incluye el runtime de .NET: no hace falta instalar .NET po
 
 ## Empezar a jugar
 
-1. Descargá `GameSirSimple-v1.2.0-win-x64.zip` desde [Releases](https://github.com/lferraro1103/gamesir-simple/releases).
+1. Descargá `GameSirSimple-v1.2.1-win-x64.zip` desde [Releases](https://github.com/lferraro1103/gamesir-simple/releases).
 2. Extraé el ZIP. El ejecutable integra el mapa del mando y el runtime de .NET; no necesitás un archivo de mapeo separado.
 3. Conectá el X5 Lite. No necesitás otro emulador de mandos.
 4. Abrí `GameSirSimple.exe` y verificá los controles en **Joystick interactivo**.
