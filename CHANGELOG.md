@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.2
+
+- Show the Windows "unknown publisher" prompt only once: after the first approved launch, the app removes the internet download mark from its own EXE.
+- Add an offline check for removing the download mark without changing the file.
+
 ## v1.2.1
 
 - Fix a startup crash when a saved response curve (or any stick setting) was above 100.

@@ -43,6 +43,15 @@ static class VisualCheck
             result.Add("PASS: malformed settings repaired, valid bindings preserved, saved schema roundtrip and input reset.");
             string embedded=System.Text.Encoding.UTF8.GetString(SDL.EmbeddedMapping());if(!embedded.Contains(",GameSir X5 Lite,") || !embedded.Contains("platform:Windows,"))throw new Exception("Missing self-contained model mapping");
             result.Add("PASS: X5 Lite mapping embedded; no external mapping file needed.");
+            string marked=Path.Combine(Path.GetTempPath(),$"gamesir-mark-{Guid.NewGuid():N}.exe");
+            try {
+                File.WriteAllText(marked,"test");File.WriteAllText(marked+":Zone.Identifier","[ZoneTransfer]\r\nZoneId=3\r\n");
+                if(!DownloadMark.Has(marked))throw new Exception("Test download mark was not created");
+                DownloadMark.Clear(marked);
+                if(DownloadMark.Has(marked) || File.ReadAllText(marked)!="test")throw new Exception("Download mark not removed cleanly");
+                DownloadMark.Clear(marked);DownloadMark.Clear(null);
+            }finally{File.Delete(marked);}
+            result.Add("PASS: internet download mark removed from the EXE after the first approved launch; file contents untouched.");
             foreach(bool pressed in new[]{false,true}){
                 using var b=new Bitmap(1080,600);using var g=Graphics.FromImage(b);g.Clear(Color.FromArgb(248,250,253));var values=new float[25];
                 if(pressed){values[0]=1;values[9]=1;values[11]=1;values[16]=1;values[18]=1;}

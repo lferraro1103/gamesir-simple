@@ -13,6 +13,7 @@ static class Program
         ApplicationConfiguration.Initialize();
         if(args.Contains("--render-preview")) { VisualCheck.Run(args); return; }
         if(args.Contains("--diagnostic")) { Diagnostics.Run(); return; }
+        DownloadMark.Clear(Environment.ProcessPath);
         I18n.Language=Settings.Load().Language;
         using var single = new Mutex(true,"Local\\GameSirSimple.X5",out bool first);
         if(!first) { MessageBox.Show(I18n.T("GameSir Simple ya está abierto.")); return; }

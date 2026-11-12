@@ -31,7 +31,7 @@
 
 ## 快速开始
 
-1. 在 [Releases](https://github.com/lferraro1103/gamesir-simple/releases) 中下载 `GameSirSimple-v1.2.1-win-x64.zip`。
+1. 在 [Releases](https://github.com/lferraro1103/gamesir-simple/releases) 中下载 `GameSirSimple-v1.2.2-win-x64.zip`。
 2. 解压 ZIP。可执行文件已内置手柄映射和 .NET 运行时，无需额外的映射文件。
 3. 连接 X5 Lite，无需其他手柄模拟程序。
 4. 运行 `GameSirSimple.exe`，可在语言选择器中选择 **简体中文**，然后在**交互式手柄**页面检查输入。
