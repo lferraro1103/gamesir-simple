@@ -32,7 +32,8 @@ static class VisualCheck
             if(Engine.Shape(.5f,0,.1f,1,2).x>=Engine.Shape(.5f,0,.1f,1,1).x)throw new Exception("Response curve regression");
             var trigger=new Binding("axis",0,1,-1);if(trigger.AxisValue(-1)!=0 || trigger.AxisValue(1)!=1)throw new Exception("Trigger range regression");
             var inverse=new Binding("axis",0,-1,0);if(inverse.AxisValue(-1)!=1 || inverse.AxisValue(1)!=0)throw new Exception("Axis inversion regression");
-            result.Add("PASS: radial dead zone, travel, diagonal clamp, response curve and axis/trigger mapping.");
+            I18n.Language="en";if(new Binding("hat",0,8,0).ToString()!="D-pad 1 · ←")throw new Exception("D-pad binding label should show its direction");I18n.Language="es";
+            result.Add("PASS: radial dead zone, travel, diagonal clamp, response curve, axis/trigger mapping and D-pad labels.");
             var settings=new Settings{Language="zh-CN",LeftDead=-5,RightDead=500,Outer=0,Response=900,Centers=new[]{float.NaN,1f,.05f,0},Bindings=new(){["A"]=null!,["B"]=new("axis",0,int.MinValue,0),["X"]=new("button",3,1,0),["unknown"]=new("button",0,1,0)}};
             settings.Normalize();
             if(settings.LeftDead!=0 || settings.RightDead!=40 || settings.Outer!=60 || settings.Response!=200 || settings.Centers[0]!=0 || settings.Centers[1]!=0 || settings.Centers[2]!=.05f || settings.Bindings.Count!=1 || !settings.Bindings.ContainsKey("X"))throw new Exception("Invalid settings not repaired");
@@ -73,6 +74,16 @@ static class VisualCheck
                     }
                 }
             }
+            var custom=new Settings{LeftDead=25,RightDead=5,Outer=80,Response=180};
+            using(var window=new MainWindow(true,custom)){
+                var numbers=Descendants(window).OfType<NumericUpDown>().ToArray();
+                if(numbers.Length!=4 || numbers[0].Value!=25 || numbers[3].Value!=180)throw new Exception("Saved stick settings above 100 not loaded");
+                numbers[0].Value=33;numbers[3].Value=150;
+                var picker=Descendants(window).OfType<LanguagePicker>().Single();
+                picker.SelectedIndex=1;picker.SelectedIndex=0;
+                if(numbers[0].Value!=33 || numbers[3].Value!=150 || custom.LeftDead!=33 || custom.Response!=150 || numbers[0].Text!="33")throw new Exception("Language switch reset stick settings");
+            }
+            result.Add("PASS: saved response curves above 100 load, and language switching keeps edited stick values.");
             result.Add("PASS: live ES/EN/ZH language switching and back, mapping labels, tray translations and saved language schema.");
             result.Add("PASS: all three screens rendered in all three languages offscreen; no external-app banner or saved-setting changes.");
             if(!MainWindow.KeepInTray(CloseReason.UserClosing,false) || MainWindow.KeepInTray(CloseReason.UserClosing,true) || MainWindow.KeepInTray(CloseReason.WindowsShutDown,false) || MainWindow.KeepInTray(CloseReason.ApplicationExitCall,false))throw new Exception("Tray closing policy regression");

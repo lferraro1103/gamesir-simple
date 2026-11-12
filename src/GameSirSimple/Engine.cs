@@ -47,7 +47,7 @@ static class SDL
     }
     public static byte[] EmbeddedMapping(){
         using var stream=typeof(SDL).Assembly.GetManifestResourceStream("GameSirSimple.gamecontrollerdb.txt")??throw new Exception(I18n.T("No se encontró el mapa integrado del GameSir."));
-        using var reader=new StreamReader(stream);var lines=reader.ReadToEnd().Split('\n').Where(l=>l.Contains(",GameSir X5 Lite,") && l.Contains("platform:Windows,"));
+        using var reader=new StreamReader(stream);var lines=reader.ReadToEnd().Split('\n').Select(l=>l.TrimEnd('\r')).Where(l=>l.Contains(",GameSir X5 Lite,") && l.Contains("platform:Windows,"));
         string mapping=string.Join("\n",lines).Trim();
         if(mapping.Length==0)throw new Exception(I18n.T("El mapa integrado del GameSir está incompleto."));
         return Encoding.UTF8.GetBytes(mapping+"\n");
@@ -55,7 +55,7 @@ static class SDL
 }
 
 public record Binding(string Kind,int Index,int Sign,float Center) {
-    public override string ToString()=>Kind=="button"?I18n.T("Botón {0}",Index+1):Kind=="hat"?I18n.T("Cruceta {0} · {1}",Index+1,Sign):I18n.T("Eje {0} {1}",Index+1,Sign>0?"+":"−");
+    public override string ToString()=>Kind=="button"?I18n.T("Botón {0}",Index+1):Kind=="hat"?I18n.T("Cruceta {0} · {1}",Index+1,Sign switch{1=>"↑",2=>"→",4=>"↓",8=>"←",_=>Sign.ToString()}):I18n.T("Eje {0} {1}",Index+1,Sign>0?"+":"−");
     public float AxisValue(float raw)=>float.IsFinite(raw)&&float.IsFinite(Center)?Math.Clamp((raw-Center)*Sign/Math.Max(.05f,1-Center*Sign),0,1):0;
 }
 public class Settings {

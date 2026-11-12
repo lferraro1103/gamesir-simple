@@ -80,7 +80,13 @@ class ControllerView:Control
             using var ring=new Pen(Color.FromArgb(84,104,129),3);using var b=new SolidBrush(Color.FromArgb(14,24,38));g.FillEllipse(b,x-70,y-70,140,140);g.DrawEllipse(ring,x-70,y-70,140,140);
             using var dz=new SolidBrush(Color.FromArgb(60,106,142,176));float r=dead*.58f;g.FillEllipse(dz,x-r,y-r,r*2,r*2);
             using var cross=new Pen(Color.FromArgb(58,78,101),1);g.DrawLine(cross,x-60,y,x+60,y);g.DrawLine(cross,x,y-60,x,y+60);
-            using var trace=new Pen(Color.FromArgb(70,190,220),3);g.DrawLine(trace,x,y,x+vx*36,y+vy*36);using var dot=new SolidBrush(Color.FromArgb(67,211,208));g.FillEllipse(dot,x+vx*36-5,y+vy*36-5,10,10);
+        }
+        // Drawn after the buttons so small stick movements stay visible over L3/R3; same 58px scale as the dead zone.
+        void Pointer(float x,float y,float vx,float vy){
+            if(vx==0 && vy==0)return;
+            float px=x+vx*58,py=y+vy*58;
+            using var trace=new Pen(Color.FromArgb(150,70,190,220),2.5f){StartCap=LineCap.Round,EndCap=LineCap.Round};g.DrawLine(trace,x,y,px,py);
+            using var dot=new SolidBrush(Color.FromArgb(67,211,208));using var edge=new Pen(Color.White,1.5f);g.FillEllipse(dot,px-6,py-6,12,12);g.DrawEllipse(edge,px-6,py-6,12,12);
         }
         Stick(166,215,lx,ly,leftDead);Stick(646,350,rx,ry,rightDead);
         using(var b=new SolidBrush(Color.FromArgb(15,25,40)))using(var p=Rounded(new(241,326,38,38),5))g.FillPath(b,p);
@@ -92,6 +98,7 @@ class ControllerView:Control
             if(s.Round){g.FillEllipse(b,s.Bounds);g.DrawEllipse(pen,s.Bounds);}else{using var p=Rounded(s.Bounds,8);g.FillPath(b,p);g.DrawPath(pen,p);}
             DrawText(g,s.Label,s.Bounds,s.Index>=17?19: s.Index==7||s.Index==8?13:17,active||selected?Color.White:s.Tint,FontStyle.Bold);
         }
+        Pointer(166,215,lx,ly);Pointer(646,350,rx,ry);
         DrawText(g,I18n.T("IZQUIERDA · ZONA MUERTA {0}%",leftDead),new(42,454,330,26),13,muted,FontStyle.Bold);DrawText(g,I18n.T("DERECHA · ZONA MUERTA {0}%",rightDead),new(528,454,330,26),13,muted,FontStyle.Bold);
         g.Restore(saved);
     }
