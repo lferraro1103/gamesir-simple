@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+*.pdb
+dist/
+artifacts/
+diagnostic.txt
+visual-check.txt
